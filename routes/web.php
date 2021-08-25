@@ -18,3 +18,34 @@ $router->get(
         'as'   => 'main-home'
     ]
 );
+
+$router->get(
+    '/categories',
+    [
+        'uses' => 'CategoryController@list',
+        'as'   => 'Category-list'
+    ]
+);
+$router->get(
+    '/categories/{id}',
+    [
+        'uses' => 'CategoryController@item',
+        'as'   => 'Category-item'
+    ]
+);
+$router->delete(
+    '/categories/{id}',
+    [
+        'uses' => 'CategoryController@delete',
+        'as'   => 'Category-delete'
+    ]
+);
+$router->post(
+    '/categories',
+    [
+        'uses' => 'CategoryController@create',
+        'as'   => 'Category-create'
+    ]
+);
+
+
