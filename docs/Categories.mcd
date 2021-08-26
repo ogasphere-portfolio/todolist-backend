@@ -1,0 +1,3 @@
+TASKS: task_code, title, completion, status, created_at, updated_at
+HAVE, 11 TASKS, 0N CATEGORIES
+CATEGORIES: category_code, name, status, created_at, updated_at

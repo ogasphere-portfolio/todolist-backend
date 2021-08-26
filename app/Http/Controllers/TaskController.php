@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-class CategoryController extends CoreController
+use App\Models\Task;
+
+class TaskController extends CoreController
 {
-    private $taskList = [];
 
 
     /**
@@ -21,7 +22,9 @@ class CategoryController extends CoreController
     public function list()
     {
 
-        return response()->json($this->taskList);
+        $tasks  = Task::all();
+
+        return response()->json($tasks);
     }
     public function item()
     {
