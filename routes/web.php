@@ -26,11 +26,26 @@ $router->get(
         'as'   => 'Category-list'
     ]
 );
+
 $router->get(
+    '/categories/{id}',
+    [
+        'uses' => 'CategoryController@edit',
+        'as'   => 'Category-edit'
+    ]
+);
+$router->put(
     '/categories/{id}',
     [
         'uses' => 'CategoryController@update',
         'as'   => 'Category-update'
+    ]
+);
+$router->patch(
+    '/categories/{id}',
+    [
+        'uses' => 'CategoryController@patch',
+        'as'   => 'Category-patch'
     ]
 );
 $router->delete(
@@ -56,11 +71,26 @@ $router->get(
         'as'   => 'Task-list'
     ]
 );
+
 $router->get(
+    '/tasks/{id}',
+    [
+        'uses' => 'TaskController@edit',
+        'as'   => 'task-edit'
+    ]
+);
+$router->put(
     '/tasks/{id}',
     [
         'uses' => 'TaskController@update',
         'as'   => 'Task-update'
+    ]
+);
+$router->patch(
+    '/tasks/{id}',
+    [
+        'uses' => 'TaskController@patch',
+        'as'   => 'Task-patch'
     ]
 );
 $router->delete(
