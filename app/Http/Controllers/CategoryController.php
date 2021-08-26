@@ -20,11 +20,23 @@ class CategoryController extends CoreController
         return response()->json($categories);
 
     }
-
     public function update(Request $request, $id){
         $category  = Category::find($id);
+        \dump($category);
         $category->name = $request->input('name');
         $category->status = $request->input('status');
+        \dd($category->name);
+
+        $category->save();
+
+        return response()->json($category);
+    }
+    public function update(Request $request, $id){
+        $category  = Category::find($id);
+        \dump($category);
+        $category->name = $request->input('name');
+        $category->status = $request->input('status');
+        \dd($category->name);
 
         $category->save();
 
