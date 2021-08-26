@@ -57,8 +57,11 @@ class TaskController extends CoreController
     public function create(Request $request){
 
         $task = Task::create($request->all());
-
-        return response()->json($task);
+        if ($task->save()) {
+            return response()->json($task,201);
+           } else {
+            return response()->json(['error' => 'Internal Server Error'], 500);
+           }
     }
 
     /**
@@ -76,10 +79,16 @@ class TaskController extends CoreController
             $task->completion = $request->input('completion');
             $task->status = $request->input('status');
             $task->category_id = $request->input('category_id');
+
+            if ($task->save()) {
+                return response()->json($task,200);
+               } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+               }
             $task->save();
             return response()->json($task);
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
 
 
@@ -97,10 +106,15 @@ class TaskController extends CoreController
         if ($task !== null)
         {
             $task->completion = $request->input('completion');
-            $task->save();
-            return response()->json($task);
+
+
+            if ($task->save()) {
+                return response()->json($task,200);
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+               }
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
 
     }
@@ -115,12 +129,18 @@ class TaskController extends CoreController
         $task  = Task::find($id);
         if ($task !== null)
         {
-            $task->delete();
-            return response()->json('Removed successfully.');
+            if ($task->save()) {
+                return response()->json('Removed successfully.',200);
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+               }
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
+           
 
     }
+
+
 
 }

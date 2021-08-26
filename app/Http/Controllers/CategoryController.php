@@ -17,7 +17,12 @@ class CategoryController extends CoreController
 
         $categories = Category::create($request->all());
 
-        return response()->json($categories);
+
+       if ($categories->save()) {
+        return response()->json($categories,201);
+       } else {
+        return response()->json(['error' => 'Internal Server Error'], 500);
+       }
 
     }
     /**
@@ -50,7 +55,7 @@ class CategoryController extends CoreController
         {
             $category->name = $request->input('name');
             $category->status = $request->input('status');
-            
+
             $category->save();
             return response()->json($category);
         }else {
