@@ -21,7 +21,7 @@ class CategoryController extends CoreController
 
     }
 
-    public function item(Request $request, $id){
+    public function update(Request $request, $id){
         $category  = Category::find($id);
         $category->name = $request->input('name');
         $category->status = $request->input('status');

@@ -29,8 +29,8 @@ $router->get(
 $router->get(
     '/categories/{id}',
     [
-        'uses' => 'CategoryController@item',
-        'as'   => 'Category-item'
+        'uses' => 'CategoryController@update',
+        'as'   => 'Category-update'
     ]
 );
 $router->delete(
@@ -49,3 +49,31 @@ $router->post(
 );
 
 
+$router->get(
+    '/tasks',
+    [
+        'uses' => 'TaskController@list',
+        'as'   => 'Task-list'
+    ]
+);
+$router->get(
+    '/tasks/{id}',
+    [
+        'uses' => 'TaskController@update',
+        'as'   => 'Task-update'
+    ]
+);
+$router->delete(
+    '/tasks/{id}',
+    [
+        'uses' => 'TaskController@delete',
+        'as'   => 'Task-delete'
+    ]
+);
+$router->post(
+    '/tasks',
+    [
+        'uses' => 'TaskController@create',
+        'as'   => 'Task-create'
+    ]
+);
