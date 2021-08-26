@@ -44,7 +44,7 @@ class TaskController extends CoreController
         {
             return response()->json($task);
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
     }
 
@@ -137,7 +137,7 @@ class TaskController extends CoreController
         }else {
             return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
-           
+
 
     }
 

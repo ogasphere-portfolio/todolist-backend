@@ -38,7 +38,7 @@ class CategoryController extends CoreController
         {
             return response()->json($category);
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
 
     }
@@ -56,11 +56,17 @@ class CategoryController extends CoreController
             $category->name = $request->input('name');
             $category->status = $request->input('status');
 
+            if ($category->save()) {
+                return response()->json($category,200);
+               } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+               }
             $category->save();
             return response()->json($category);
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
+
     }
 
     /**
@@ -92,10 +98,13 @@ class CategoryController extends CoreController
         $category  = Category::find($id);
         if ($category !== null)
         {
-            $category->delete();
-            return response()->json('Removed successfully.');
+            if ($category->save()) {
+                return response()->json($category,200);
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+               }
         }else {
-            abort(404,"Pas le bon ID !");
+            return response()->json(['error' => 'ID not found or invalid.'], 404);
         }
 
     }
