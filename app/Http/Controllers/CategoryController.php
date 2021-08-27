@@ -16,7 +16,10 @@ class CategoryController extends CoreController
     public function create(Request $request){
 
         $categories = Category::create($request->all());
-
+        $this->validate($request, [
+            'name' => 'required',
+            'status' => 'required',
+        ]);
 
        if ($categories->save()) {
         return response()->json($categories,201);
@@ -51,6 +54,12 @@ class CategoryController extends CoreController
      */
     public function update(Request $request, $id){
         $category  = Category::find($id);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'status' => 'required',
+        ]);
+
         if ($category !== null)
         {
             $category->name = $request->input('name');
@@ -59,7 +68,7 @@ class CategoryController extends CoreController
             if ($category->save()) {
                 return response()->json($category,200);
                } else {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->json(['error' => 'Internal Server Error'], 500);
                }
             $category->save();
             return response()->json($category);
@@ -78,6 +87,12 @@ class CategoryController extends CoreController
      */
     public function patch(Request $request, $id){
         $category  = Category::find($id);
+
+        $this->validate($request, [
+            //'name' => 'required',
+            'status' => 'required',
+        ]);
+
         if ($category !== null)
         {
             $category->status = $request->input('status');

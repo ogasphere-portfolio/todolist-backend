@@ -57,6 +57,13 @@ class TaskController extends CoreController
     public function create(Request $request){
 
         $task = Task::create($request->all());
+
+        $this->validate($request, [
+            'title' => 'required',
+            'completion' => 'required',
+            'status' => 'required',
+        ]);
+
         if ($task->save()) {
             return response()->json($task,201);
            } else {
@@ -73,6 +80,13 @@ class TaskController extends CoreController
      */
     public function update(Request $request, $id){
         $task  = Task::find($id);
+
+        $this->validate($request, [
+            'title' => 'required',
+            'completion' => 'required',
+            'status' => 'required',
+        ]);
+
         if ($task !== null)
         {
             $task->title = $request->input('title');
@@ -83,7 +97,7 @@ class TaskController extends CoreController
             if ($task->save()) {
                 return response()->json($task,200);
                } else {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->json(['error' => 'Internal Server Error'], 500);
                }
             $task->save();
             return response()->json($task);
@@ -103,6 +117,13 @@ class TaskController extends CoreController
      */
     public function patch(Request $request, $id){
         $task  = Task::find($id);
+
+        $this->validate($request, [
+            //'title' => 'required',
+            'completion' => 'required',
+            //'status' => 'required',
+        ]);
+
         if ($task !== null)
         {
             $task->completion = $request->input('completion');
