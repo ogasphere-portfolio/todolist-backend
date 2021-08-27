@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends CoreController
 {
@@ -27,10 +28,9 @@ class TaskController extends CoreController
      */
     public function list()
     {
-        $tasks  = Task::all();
+        $tasks  =  Task::all()->load('category');
         return response()->json($tasks);
     }
-
     /**
      * edit
      *
@@ -56,19 +56,27 @@ class TaskController extends CoreController
     */
     public function create(Request $request){
 
-        $task = Task::create($request->all());
-
         $this->validate($request, [
             'title' => 'required',
             'completion' => 'required',
             'status' => 'required',
+            'category_id' => 'required',
         ]);
 
-        if ($task->save()) {
-            return response()->json($task,201);
-           } else {
-            return response()->json(['error' => 'Internal Server Error'], 500);
-           }
+            $task = Task::create($request->all());
+
+
+
+            if ($task->save()) {
+                return response()->json($task,201);
+            } else {
+                return response()->json(['error' => 'Bad request'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            // Response::HTTP ==> use Symfony\Component\HttpFoundation\Response;
+
+
+
     }
 
     /**
@@ -79,13 +87,14 @@ class TaskController extends CoreController
      * @return void
      */
     public function update(Request $request, $id){
-        $task  = Task::find($id);
 
         $this->validate($request, [
             'title' => 'required',
             'completion' => 'required',
             'status' => 'required',
+            'category_id' => 'required',
         ]);
+        $task  = Task::find($id);
 
         if ($task !== null)
         {
@@ -116,26 +125,46 @@ class TaskController extends CoreController
      * @return void
      */
     public function patch(Request $request, $id){
-        $task  = Task::find($id);
 
-        $this->validate($request, [
-            //'title' => 'required',
-            'completion' => 'required',
-            //'status' => 'required',
-        ]);
+       // je veux vérifier que mon utilisateur m'envoie AU MOINS UNE info
+        // Adrien : Pour moi un Patch pourrait modifier plusieurs données,
+        // le put serait là pour toutes les données d'un coup ^^
 
-        if ($task !== null)
+        // Si pas d'info, ERREUR
+        $inputs = $request->all();
+        // dd($inputs);
+        if (count($inputs) === 0)
         {
-            $task->completion = $request->input('completion');
+            return abort(Response::HTTP_BAD_REQUEST, "BAD_REQUEST");
+        }
 
+        $taskToUpdate = Task::find($id);
+        // Si il n'y a pas de résultat, notre objet $taskToUpdate sera égal à null
+        if ($taskToUpdate === null)
+        {
+            return abort(Response::HTTP_NOT_FOUND, "NOT FOUND");
+        }
+        // si j'ai la valeur de title , je met à jour mon objet
+        // https://lumen.laravel.com/docs/8.x/requests
+        // If you would like to determine if a value is present on the request AND is not empty,
+        // you may use the filled()
+        if ($request->filled("title")){
+            $taskToUpdate->title = $request->input("title");
+        }
+        if ($request->filled("categoryId")){
+            $taskToUpdate->category_id = $request->input("categoryId");
+        }
+        if ($request->filled("completion")){
+            $taskToUpdate->completion = $request->input("completion");
+        }
+        if ($request->filled("status")){
+            $taskToUpdate->status = $request->input("status");
+        }
 
-            if ($task->save()) {
-                return response()->json($task,200);
-            } else {
-                return response()->json(['error' => 'Unauthorized'], 401);
-               }
+        if ($taskToUpdate->save()){
+            return response()->json($taskToUpdate, Response::HTTP_OK);
         }else {
-            return response()->json(['error' => 'ID not found or invalid.'], 404);
+            return abort(Response::HTTP_INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR");
         }
 
     }

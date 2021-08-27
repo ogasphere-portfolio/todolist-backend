@@ -10,7 +10,7 @@ class Category extends Model
    //protected $visible = ['name'];
    protected $hidden = ['created_at', 'updated_at'];
 
-
+   
 
     public function task()
     {
