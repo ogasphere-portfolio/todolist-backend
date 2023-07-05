@@ -1,0 +1,121 @@
+<h1 id="backend">Backend</h1>
+<p>C'est qu'il faut penser à coder notre backend maintenant 😲</p>
+<p>Et après avoir mis en place un petit framework, on va désormais utiliser <em>Lumen</em>, le micro-framework de <em>Laravel</em> !</p>
+<p><details><summary>réaction attendue…</summary></p>
+<p><img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="" /></p>
+<p><details><summary>ou…</summary></p>
+<p><img src="https://media.giphy.com/media/b5LTssxCLpvVe/giphy.gif" alt="" /></p>
+<p><details><summary>ou…</summary></p>
+<p><img src="https://media.giphy.com/media/BlVnrxJgTGsUw/giphy.gif" alt="" /></p>
+<p><details><summary>ou…</summary></p>
+<p><img src="https://media.giphy.com/media/nXxOjZrbnbRxS/giphy.gif" alt="" /></p>
+<p><details><summary>tu as saisi l'idée ?</summary></p>
+<p><img src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif" alt="" /></p>
+<p></details></p>
+<p></details></p>
+<p></details></p>
+<p></details></p>
+<p></details></p>
+<h2 id="etapes">Etapes</h2>
+<h3 id="1-configuration-wrench">#1 Configuration 🔧</h3>
+<ul>
+<li>installer les dépendances <code>composer install</code></li>
+<li>créer le fichier de config <code>.env</code> (équivalent de notre <code>app/config.ini</code>)</li>
+<li>dupliquer le fichier <code>.env.example</code></li>
+<li>renommer la copie en <code>.env</code></li>
+<li>puis renseigner les valeurs dans le fichier <code>.env</code></li>
+<li>dans le fichier <code>bootstrap/app.php</code></li>
+<li>la ligne <code>$app-&gt;withEloquent();</code> est décommentée (par défaut, elle est commentée)</li>
+<li>la ligne <code>$app-&gt;withFacades();</code> est décommentée (par défaut, elle est commentée)</li>
+<li><strong>Eloquent</strong> est <a href="https://fr.wikipedia.org/wiki/Mapping_objet-relationnel">un ORM</a> respectant la conception <em>Active Record</em></li>
+<li><a href="https://fr.wikipedia.org/wiki/Fa%C3%A7ade_(patron_de_conception)">les <strong>Facades</strong></a> permettent de simplifier l'utilisation de certaines fonctionnalités de <em>Lumen</em></li>
+<li>sans <code>facade</code> :<br />
+<code>php
+$results = app('db')-&gt;select("SELECT * FROM users");
+</code></li>
+<li>avec <code>facade</code> :<br />
+<code>php
+$results = DB::select("SELECT * FROM users");
+</code></li>
+<li>ça fonctionne tout autant, mais c'est plus simple !</li>
+</ul>
+<h3 id="2-première-page-one">#2 Première page :one:</h3>
+<ul>
+<li>la route pour la première page est déjà codée</li>
+<li>mais ce n'est pas le cas du <em>Controller</em> et de la méthode du <em>Controller</em></li>
+<li>analyse la déclaration de la route pour connaître le nom du <em>Controller</em> à déclarer</li>
+<li><a href="https://lumen.laravel.com/docs/routing">cette doc sur le routage</a> peut aider</li>
+<li>créer ce <em>Controller</em></li>
+<li><a href="https://lumen.laravel.com/docs/controllers">cette doc sur les <em>Controllers</em></a> peut aider</li>
+<li>déclarer la méthode</li>
+<li>et y placer un petit <em>echo</em></li>
+<li>la page est désormais consultable via un navigateur</li>
+<li>pour vérifier, on va lancer un serveur Web spécifique, celui de PHP (et oui, pas de Apache cette fois encore)</li>
+<li>dans le terminal, se placer à la racine du projet/dépôt</li>
+<li>exécuter : <code>php -S 0.0.0.0:8080 -t public</code> (comme en S06 🎉)</li>
+<li>désormais, on pourrait générer du code HTML grâce <a href="https://lumen.laravel.com/docs/views">aux <em>Views</em> (et sa doc)</a></li>
+<li>mais on veut surtout générer du code JSON, donc pas de <em>View</em>…</li>
+</ul>
+<h3 id="3-retourner-un-json-books">#3 Retourner un JSON 📚</h3>
+<ul>
+<li>créer une route avec les infos suivantes :</li>
+<li>URL : <code>/categories</code></li>
+<li>HTTP Method : <code>GET</code></li>
+<li><em>Controller</em> : <code>CategoryController</code></li>
+<li>Method : <code>list</code></li>
+<li>coder le <em>Controller</em> et déclarer la méthode</li>
+<li>retourner la version JSON du tableau ci-dessous</li>
+<li><a href="https://lumen.laravel.com/docs/responses#json-responses">cette doc sur les Responses HTTP</a> peut aider</li>
+</ul>
+<p><details><summary>Tableau</summary></p>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$categoriesList</span> = [
+  <span class="hljs-number">1</span> =&gt; [
+    <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>,
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Chemin vers O\&#x27;clock&#x27;</span>,
+    <span class="hljs-string">&#x27;status&#x27;</span> =&gt; <span class="hljs-number">1</span>
+  ],
+  <span class="hljs-number">2</span> =&gt; [
+    <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">2</span>,
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Courses&#x27;</span>,
+    <span class="hljs-string">&#x27;status&#x27;</span> =&gt; <span class="hljs-number">1</span>
+  ],
+  <span class="hljs-number">3</span> =&gt; [
+    <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">3</span>,
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;O\&#x27;clock&#x27;</span>,
+    <span class="hljs-string">&#x27;status&#x27;</span> =&gt; <span class="hljs-number">1</span>
+  ],
+  <span class="hljs-number">4</span> =&gt; [
+    <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">4</span>,
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre Professionnel&#x27;</span>,
+    <span class="hljs-string">&#x27;status&#x27;</span> =&gt; <span class="hljs-number">1</span>
+  ]
+];
+</code></pre>
+<p></details></p>
+<h3 id="4-retourner-les-données-dun-élément-en-particulier-notebook">#4 Retourner les données d'un élément en particulier 📓</h3>
+<ul>
+<li>créer une route avec les infos suivantes :</li>
+<li>URL : <code>/categories/[id]</code> où <code>[id]</code> est une portion dynamique de l'URL (mais il faut bien <a href="https://lumen.laravel.com/docs/routing#required-parameters">lire cette doc</a>)</li>
+<li>HTTP Method : <code>GET</code></li>
+<li><em>Controller</em> : <code>CategoryController</code></li>
+<li>Method : <code>item</code></li>
+<li>coder le <em>Controller</em> et déclarer la méthode</li>
+<li>récupérer la portion dynamique de l'URL, nommée <code>id</code></li>
+<li>récupérer ensuite les données sur la catégorie de cet <code>id</code></li>
+<li>utiliser le tableau de l'étape précédente</li>
+<li>et oui, on va copier-coller ce tableau 😱</li>
+<li>retourner la version JSON de ces données</li>
+</ul>
+<h3 id="5-404-not-found-no_entry_sign">#5 404 not found 🚫</h3>
+<ul>
+<li>on va améliorer le code du <em>Endpoint</em> de l'étape précédente</li>
+<li>si l'id fourni n'existe pas dans notre tableau, alors, on envoie une erreur 404 (sans affichage)</li>
+<li><a href="https://laravel.com/docs/errors#http-exceptions">cette doc sur les <em>Exceptions HTTP</em></a> peut aider</li>
+</ul>
+<h3 id="6-parce-que-cest-cool-sunglasses">#6 Parce que c'est cool 😎</h3>
+<ul>
+<li>on peut lire <a href="https://lumen.laravel.com/docs/responses#redirects">la doc sur les redirections</a></li>
+<li>on peut lire <a href="https://laravel.com/docs/logging#writing-log-messages">la doc sur les logs</a></li>
+<li>on pourrait lire <a href="https://lumen.laravel.com/docs">toute la doc</a>, mais ça serait fastidieux 😵</li>
+<li>on ira donc piocher dedans quand on aura un besoin 😌</li>
+</ul>
